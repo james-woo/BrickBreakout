@@ -17,26 +17,26 @@ int level[BOARD_BRICK_WIDTH][BOARD_BRICK_HEIGHT] =
 };
 
 Board::Board() {
-	this->x = 0;
-	this->y = 0;
-	this->score = 0;
-	this->lives = 3;
+	this->x_ = 0;
+	this->y_ = 0;
+	this->score_ = 0;
+	this->lives_ = 3;
 }
 
-void Board::updateScore(int score) {
-	this->score += score;
+void Board::update_score(int score) {
+	this->score_ += score;
 }
 
-bool Board::updateLives(int life) {
-	if(lives != 0) {
-		this->lives += life;
+bool Board::update_lives(int life) {
+	if(lives_ != 0) {
+		this->lives_ += life;
 		return false;
 	} else {
 		return true;
 	}
 }
 
-void Board::createLevel() {
+void Board::create_level() {
 	for (int i = 0; i < BOARD_BRICK_WIDTH; ++i) {
         for (int j = 0; j < BOARD_BRICK_HEIGHT; ++j) {
             Brick brick;
@@ -44,7 +44,7 @@ void Board::createLevel() {
             brick.y = j * BRICK_HEIGHT + j + BRICK_OFFSET_Y;
             brick.hardness = level[i][j];   // Random color
             brick.state = true;         // Brick is present
-            bricks[i][j] = brick;
+            bricks_[i][j] = brick;
         }
     }
 }

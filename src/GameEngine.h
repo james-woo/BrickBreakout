@@ -25,7 +25,7 @@ public:
 	void render();
 	void newGame();
 
-	int getMouseX() { return mouseX_; }
+	int get_mouse_x() { return mouseX_; }
 
 private:
 	SDL_Window* window_;

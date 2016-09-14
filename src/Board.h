@@ -25,18 +25,26 @@ public:
 	Board();
 	~Board();
 
-	void updateScore(int score);
-	bool updateLives(int life);
-	void createLevel();
+    void set_x(int x) { x_ = x; }
+    void set_y(int y) { y_ = y; }
+    int get_x() { return x_; }
+    int get_y() { return y_; }
+    int get_score() { return score_; }
+    int get_lives() { return lives_; }
+    Brick* get_brick(int i, int j) { return &bricks_[i][j]; }
+	void update_score(int score);
+	bool update_lives(int life);
+	void create_level();
 
+private:
 	// Board position
-	int x;
-	int y;
+	int x_;
+	int y_;
 
-	int score;
-	int lives;
+	int score_;
+	int lives_;
 
-	Brick bricks[BOARD_BRICK_WIDTH][BOARD_BRICK_HEIGHT];
+	Brick bricks_[BOARD_BRICK_WIDTH][BOARD_BRICK_HEIGHT];
 };
 
 #endif // BOARD_H_

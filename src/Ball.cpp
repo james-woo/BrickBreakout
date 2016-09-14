@@ -13,19 +13,19 @@ namespace {
 }
 
 Ball::Ball(int x, int y) {
-	this->x = x;
-	this->y = y;
+	this->x_ = x;
+	this->y_ = y;
 
-	status = READY;
-	dx = 0;
-	dy = 0;
-	bounce = false;
-	speed = 8;
-	angle = 0.0f;
-	bounceCount = 0;
+	status_ = READY;
+	dx_ = 0;
+	dy_ = 0;
+	bounce_ = false;
+	speed_ = 8;
+	angle_ = 0.0f;
+	hits_ = 0;
 }
 
-void Ball::launchBall() {
+void Ball::launch_ball() {
 
 	// Direction towards either paddle, -1 or 1
 	std::uniform_int_distribution<int> dir(0,1);
@@ -33,83 +33,83 @@ void Ball::launchBall() {
 
 	// Angle between 45 and 135
 	std::uniform_int_distribution<int> ang(45,135);
-	angle = ang(gen);
+	angle_ = ang(gen);
 
-	dx = (int) (direction * speed * std::cos(angle * M_PI/180.0f));
-	dy = (int) (speed * std::sin(angle * M_PI/180.0f));
+	dx_ = (int) (direction * speed_ * std::cos(angle_ * M_PI/180.0f));
+	dy_ = (int) (speed_ * std::sin(angle_ * M_PI/180.0f));
 
-	status = LAUNCHED;
+	status_ = LAUNCHED;
 }
 
-void Ball::updateSpeed() {
+void Ball::update_speed() {
 	// After 5 bounces, increase speed
-	if (bounceCount == 5) {
-		speed++;
-		bounceCount = 0;
+	if (hits_ == 5) {
+		speed_++;
+		hits_ = 0;
 	}
 }
 
-bool Ball::collidesWithTop() const {
-	return ((y + dy) < BOARD_HEIGHT + BALL_DIAMETER);
+bool Ball::collides_with_top() const {
+	return ((y_ + dy_) < BOARD_HEIGHT + BALL_DIAMETER);
 }
 
-bool Ball::collidesWithSides() const {
-	return ((x + dx) < 0) || 
-	       ((x + BALL_DIAMETER + dx) > SCREEN_WIDTH);
+bool Ball::collides_with_sides() const {
+	return ((x_ + dx_) < 0) ||
+	       ((x_ + BALL_DIAMETER + dx_) > SCREEN_WIDTH);
 }
 
-bool Ball::collidesWithPaddle(Paddle* paddle) const {
-	if ( x + BALL_DIAMETER > paddle->getX() && x < paddle->getX() + PADDLE_WIDTH &&
-         y + BALL_DIAMETER > paddle->getY() && y < paddle->getY() + PADDLE_HEIGHT ) {
+bool Ball::collides_with_paddle(Paddle *paddle) const {
+	if ( x_ + BALL_DIAMETER > paddle->getX() && x_ < paddle->getX() + PADDLE_WIDTH &&
+         y_ + BALL_DIAMETER > paddle->getY() && y_ < paddle->getY() + PADDLE_HEIGHT ) {
         return true;
     }
     return false;
 }
 
-bool Ball::collidesWithBrick(Brick* brick) const {
+bool Ball::collides_with_brick(Brick *brick) const {
 	if (!brick->state) return false;
-	if ( x + BALL_DIAMETER > brick->x && x < brick->x + BRICK_WIDTH &&
-         y + BALL_DIAMETER > brick->y && y < brick->y + BRICK_HEIGHT ) {
+	if ( x_ + BALL_DIAMETER > brick->x && x_ < brick->x + BRICK_WIDTH &&
+         y_ + BALL_DIAMETER > brick->y && y_ < brick->y + BRICK_HEIGHT ) {
 		return true;
 	}
 	return false;
 }
 
-void Ball::bounceOffPaddle(Paddle* paddle) {
+void Ball::bounce_off_paddle(Paddle *paddle) {
 	if(paddle == nullptr) return;
-	bounceCount++;
+	hits_++;
 
-	int direction = (x < (paddle->getX() + (PADDLE_WIDTH / 2) - (BALL_DIAMETER / 2))) ? 1 : -1;
+	int direction = (x_ < (paddle->getX() + (PADDLE_WIDTH / 2) - (BALL_DIAMETER / 2))) ? 1 : -1;
 
 	// Calculation for ball's new trajectory
 	// Closer to the edges give larger dx
-    int relativeX = (x - paddle->getX() + BALL_DIAMETER);
+    int relativeX = (x_ - paddle->getX() + BALL_DIAMETER);
 
     // Ranges from 0 ~ 70 follows this parabola: (7/100)(x-35)^2 + 90
-    angle = (0.07f * (relativeX - 35)*(relativeX - 35) + 90);
+    angle_ = (0.07f * (relativeX - 35)*(relativeX - 35) + 90);
 	
 	// Speed on both axis
-    dx = (int) (direction * speed * std::cos(angle * M_PI/180.0f));
-	dy = (int) (speed * std::sin(angle * M_PI/180.0f));
+    dx_ = (int) (direction * speed_ * std::cos(angle_ * M_PI/180.0f));
+	dy_ = (int) (speed_ * std::sin(angle_ * M_PI/180.0f));
 }
 
-void Ball::bounceOffBrick(Brick* brick) {
-	dy = (int) (speed * std::sin(-1 * angle * M_PI/180.0f));
+void Ball::bounce_off_brick(Brick *brick) {
+	dy_ = (int) (speed_ * std::sin(-1 * angle_ * M_PI/180.0f));
 	if(--brick->hardness < 1) {
 		brick->state = false;
 	}
 }
 
-bool Ball::outOfBounds() {
-	return y > SCREEN_HEIGHT || (x > SCREEN_WIDTH);
+bool Ball::out_of_bounds() {
+	return y_ > SCREEN_HEIGHT || (x_ > SCREEN_WIDTH);
 }
 
 void Ball::reset() {
-	y = SCREEN_HEIGHT - 30;
-	speed = 8;
-	bounceCount = 0;
-	dx = 0;
-	dy = 0;
+	y_ = SCREEN_HEIGHT - 30;
+	speed_ = 8;
+	hits_ = 0;
+	dx_ = 0;
+	dy_ = 0;
 
-	status = READY;
+	status_ = READY;
 }
