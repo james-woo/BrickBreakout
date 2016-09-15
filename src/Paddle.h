@@ -2,18 +2,15 @@
 #define PADDLE_H_
 
 const int PADDLE_HEIGHT = 10;
-const int PADDLE_WIDTH = 60;
+const int PADDLE_WIDTH = 72;
 
 class Paddle {
 public:
 	Paddle(int x, int y);
-	int getX() const { return x_; }
-	int getY() const { return y_; }
+	int get_x() const { return x_; }
+	int get_y() const { return y_; }
 
-	void setX(int x);
-	void setY(int y);
-
-	void addToX(int x);
+	void set_x(int x);
 private:
 	int x_;
 	int y_;

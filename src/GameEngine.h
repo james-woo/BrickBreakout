@@ -3,6 +3,7 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
+#include <memory>
 
 class Ball;
 class Paddle;
@@ -25,8 +26,6 @@ public:
 	void render();
 	void newGame();
 
-	int get_mouse_x() { return mouseX_; }
-
 private:
 	SDL_Window* window_;
 	SDL_Renderer* renderer_;
@@ -36,18 +35,18 @@ private:
 	Paddle* paddle_;
 	Board* board_;
 
-	int mouseX_, mouseY_;
+	int mouse_x_, mouse_y_;
 	bool exit_;
 
 	TTF_Font* font_;
 
-	SDL_Surface* scoreSurface_;
-	SDL_Texture* scoreMessage_;
-	SDL_Rect scoreMessageRect_;
+	SDL_Surface* score_surface_;
+	SDL_Texture* score_message_;
+	SDL_Rect score_message_rect_;
 
-	SDL_Surface* livesSurface_;
-	SDL_Texture* livesMessage_;
-	SDL_Rect livesMessageRect_;
+	SDL_Surface* lives_surface_;
+	SDL_Texture* lives_message_;
+	SDL_Rect lives_message_rect_;
 };
 
 #endif // GAME_ENGINE_H_

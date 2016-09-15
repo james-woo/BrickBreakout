@@ -25,16 +25,17 @@ public:
 	Board();
 	~Board();
 
-    void set_x(int x) { x_ = x; }
-    void set_y(int y) { y_ = y; }
     int get_x() { return x_; }
     int get_y() { return y_; }
     int get_score() { return score_; }
     int get_lives() { return lives_; }
+    bool game_is_over() { return gameover_; }
     Brick* get_brick(int i, int j) { return &bricks_[i][j]; }
 	void update_score(int score);
 	bool update_lives(int life);
 	void create_level();
+    void game_over();
+    void new_game();
 
 private:
 	// Board position
@@ -43,6 +44,8 @@ private:
 
 	int score_;
 	int lives_;
+
+    bool gameover_;
 
 	Brick bricks_[BOARD_BRICK_WIDTH][BOARD_BRICK_HEIGHT];
 };
